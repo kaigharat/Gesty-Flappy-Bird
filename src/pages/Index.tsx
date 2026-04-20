@@ -1,16 +1,29 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useEffect, useState } from "react";
+import { useFuzzyStore } from "@/store/fuzzy-store";
+import SplashScreen from "@/components/SplashScreen";
+import AppShell from "@/components/AppShell";
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
+const Index = () => {
+  const theme = useFuzzyStore((s) => s.theme);
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", theme === "dark");
+  }, [theme]);
+
+  useEffect(() => {
+    document.title = "FuzzyCast AI — Smart Weather, Smarter Predictions";
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute("content", "AI-powered fuzzy logic weather prediction. Visualize membership functions, rules, and confidence in real time.");
+    const t = setTimeout(() => setShowSplash(false), 2600);
+    return () => clearTimeout(t);
+  }, []);
+
   return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
-    </div>
+    <main className="min-h-screen aurora-bg overflow-hidden">
+      {showSplash ? <SplashScreen onDone={() => setShowSplash(false)} /> : <AppShell />}
+    </main>
   );
 };
-
-const Index = PlaceholderIndex;
 
 export default Index;
